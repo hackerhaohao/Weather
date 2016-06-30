@@ -2,54 +2,63 @@ package com.hacker.haohao.weather.app.model;
 
 import java.io.Serializable;
 
-/**
- * City 实体
- * 
- * @author ZhangHao
- * 
- */
 public class City implements Serializable {
 
-	private static final long serialVersionUID = 2182700274724803802L;
+	private static final long serialVersionUID = 1L;
 
-	private int id;
+	private String id;
+	private String city;
+	private String lat;
+	private String lon;
+	private String prov;
+	private String cnty;
 
-	private String cityName;
-
-	private String cityCode;
-
-	private int provinceId;
-
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
-	public String getCityName() {
-		return cityName;
+	public String getCity() {
+		return city;
 	}
 
-	public void setCityName(String cityName) {
-		this.cityName = cityName;
+	public void setCity(String city) {
+		this.city = city;
 	}
 
-	public String getCityCode() {
-		return cityCode;
+	public String getLat() {
+		return lat;
 	}
 
-	public void setCityCode(String cityCode) {
-		this.cityCode = cityCode;
+	public void setLat(String lat) {
+		this.lat = lat;
 	}
 
-	public int getProvinceId() {
-		return provinceId;
+	public String getLon() {
+		return lon;
 	}
 
-	public void setProvinceId(int provinceId) {
-		this.provinceId = provinceId;
+	public void setLon(String lon) {
+		this.lon = lon;
+	}
+
+	public String getProv() {
+		return prov;
+	}
+
+	public void setProv(String prov) {
+		this.prov = prov;
+	}
+
+	public String getCnty() {
+		return cnty;
+	}
+
+	public void setCnty(String cnty) {
+		this.cnty = cnty;
 	}
 
 }

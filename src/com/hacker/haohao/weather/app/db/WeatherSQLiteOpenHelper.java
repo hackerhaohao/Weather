@@ -12,30 +12,26 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class WeatherSQLiteOpenHelper extends SQLiteOpenHelper{
 	/**
-	 * province建表语句
+	 * 国内城市建表语句
 	 */
-	private static final String CREATE_PROVINCE = " create table t_province ( " +
-			"id integer primary key autoincrement, " +
-			"province_name text, " +
-			"province_code text)";
+	private static final String CREATE_CITY = " create table city_info ( " +
+			"id text primary key , " +
+			"city text, " +
+			"lat text, " +
+			"lon text, " +
+			"prov text, " +
+			"cnty text)";
 	
 	
 	/**
-	 * city建表语句
+	 * 景点建表语句
 	 */
-	private static final String CREATE_CITY = " create table t_city( " +
-			"id integer primary key autoincrement, " +
-			"city_name text, " +
-			"city_code text, " +
-			"province_id integer )";
-	/**
-	 * county建表语句
-	 */
-	private static final String CREATE_COUNTY = " create table t_county( " +
-			"id integer primary key autoincrement, " +
-			"county_name text, " +
-			"county_code text, " +
-			"city_id integer )";
+	private static final String CREATE_SCENIC = " create table scenic_info( " +
+			"id text primary key, " +
+			"city text, " +
+			"cnty text, " +
+			"lat text, " +
+			"lon text )";
 	
 	/**
 	 * 构造方法
@@ -50,12 +46,8 @@ public class WeatherSQLiteOpenHelper extends SQLiteOpenHelper{
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		//创建province表
-		db.execSQL(CREATE_PROVINCE);
-		//创建city表
 		db.execSQL(CREATE_CITY);
-		//创建county表
-		db.execSQL(CREATE_COUNTY);
+		db.execSQL(CREATE_SCENIC);
 	}
 
 	@Override

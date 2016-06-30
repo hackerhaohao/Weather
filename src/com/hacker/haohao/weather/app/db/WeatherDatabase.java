@@ -3,14 +3,13 @@ package com.hacker.haohao.weather.app.db;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.hacker.haohao.weather.app.model.City;
-import com.hacker.haohao.weather.app.model.County;
-import com.hacker.haohao.weather.app.model.Province;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import com.hacker.haohao.weather.app.model.City;
+import com.hacker.haohao.weather.app.model.Scenic;
 
 /**
  * 数据库操作的类
@@ -51,49 +50,21 @@ public class WeatherDatabase{
 		return weatherDatabase;
 	}
 	
-	/**
-	 * 保存province
-	 */
-	public void saveProvince(Province province){
-		if(null != province){
-			ContentValues values = new ContentValues();
-			values.put("province_name", province.getProvinceName());
-			values.put("province_code", province.getProvinceCode());
-			db.beginTransaction();
-			db.insert("t_province", null, values);
-			db.endTransaction();
-		}
-	}
 	
 	/**
-	 * 读取province
-	 */
-	public List<Province> loadProvinces(){
-		List<Province> list = new ArrayList<Province>();
-		Cursor cursor = db.query("t_province", null, null, null, null, null, null);
-		if(cursor.moveToFirst()){
-			do{
-				Province province = new Province();
-				province.setId(cursor.getInt(cursor.getColumnIndex("id")));
-				province.setProvinceName(cursor.getString(cursor.getColumnIndex("province_name")));
-				province.setProvinceCode(cursor.getString(cursor.getColumnIndex("province_code")));
-				list.add(province);
-			}while(cursor.moveToNext());
-		}
-		return list;
-	}
-	
-	/**
-	 * 保存city
+	 * 保存全国city
 	 */
 	public void saveCity(City city){
 		if(null != city){
 			ContentValues values = new ContentValues();
-			values.put("city_name", city.getCityName());
-			values.put("city_code", city.getCityCode());
-			values.put("province_id", city.getProvinceId());
+			values.put("id", city.getId());
+			values.put("city", city.getCity());
+			values.put("lat", city.getLat());
+			values.put("lon", city.getLon());
+			values.put("prov", city.getProv());
+			values.put("cnty", city.getCnty());
 			db.beginTransaction();
-			db.insert("t_city", null, values );
+			db.insert("city_info", null, values );
 			db.endTransaction();
 		}
 	}
@@ -101,16 +72,18 @@ public class WeatherDatabase{
 	/**
 	 * 从数据库读取某省下所有城市
 	 */
-	public List<City> loadCities(int provinceId){
+	public List<City> loadCities(){
 		List<City> list = new ArrayList<City>();
-		Cursor cursor = db.query("t_city", null, "province_id = ?", new String[]{String.valueOf(provinceId)},null, null, null);
+		Cursor cursor = db.query("city_info", null, null, null,null, null, null);
 		if(cursor.moveToFirst()){
 			do{
 				City city = new City();
-				city.setId(cursor.getInt(cursor.getColumnIndex("id")));
-				city.setCityName(cursor.getString(cursor.getColumnIndex("city_name")));
-				city.setCityCode(cursor.getString(cursor.getColumnIndex("city_code")));
-				city.setProvinceId(provinceId);
+				city.setId(cursor.getString(cursor.getColumnIndex("id")));
+				city.setCity(cursor.getString(cursor.getColumnIndex("city")));
+				city.setLat(cursor.getString(cursor.getColumnIndex("lat")));
+				city.setLon(cursor.getString(cursor.getColumnIndex("lon")));
+				city.setProv(cursor.getString(cursor.getColumnIndex("prov")));
+				city.setCnty(cursor.getString(cursor.getColumnIndex("cnty")));
 				list.add(city);
 			}while(cursor.moveToNext());
 		}
@@ -120,14 +93,16 @@ public class WeatherDatabase{
 	/**
 	 * 保存County
 	 */
-	public void saveCounty(County county){
-		if(null != county){
+	public void saveScenic(Scenic scenic){
+		if(null != scenic){
 			ContentValues values = new ContentValues();
-			values.put("county_name", county.getCountyName());
-			values.put("county_code", county.getCountyCode());
-			values.put("city_id", county.getCityId());
+			values.put("id", scenic.getId());
+			values.put("city", scenic.getCity());
+			values.put("cnty", scenic.getCnty());
+			values.put("lat", scenic.getLat());
+			values.put("lon", scenic.getLon());
 			db.beginTransaction();
-			db.insert("t_county", null, values );
+			db.insert("scenic_info", null, values );
 			db.endTransaction();
 		}
 	}
@@ -135,17 +110,18 @@ public class WeatherDatabase{
 	/**
 	 * 从数据库读取某省下所有城市
 	 */
-	public List<County> loadCounties(int cityId){
-		List<County> list = new ArrayList<County>();
-		Cursor cursor = db.query("t_county", null, "city_id = ?", new String[]{String.valueOf(cityId)},null, null, null);
+	public List<Scenic> loadScenics(){
+		List<Scenic> list = new ArrayList<Scenic>();
+		Cursor cursor = db.query("scenic_info", null, null, null,null, null, null);
 		if(cursor.moveToFirst()){
 			do{
-				County county = new County();
-				county.setId(cursor.getInt(cursor.getColumnIndex("id")));
-				county.setCountyName(cursor.getString(cursor.getColumnIndex("county_name")));
-				county.setCountyCode(cursor.getString(cursor.getColumnIndex("county_code")));
-				county.setCityId(cityId);
-				list.add(county);
+				Scenic scenic = new Scenic();
+				scenic.setId(cursor.getString(cursor.getColumnIndex("id")));
+				scenic.setCity(cursor.getString(cursor.getColumnIndex("city")));
+				scenic.setCnty(cursor.getString(cursor.getColumnIndex("cnty")));
+				scenic.setLat(cursor.getString(cursor.getColumnIndex("lat")));
+				scenic.setLon(cursor.getString(cursor.getColumnIndex("lon")));
+				list.add(scenic);
 			}while(cursor.moveToNext());
 		}
 		return list;
